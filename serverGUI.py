@@ -12,13 +12,24 @@ class ServerApp:
         self.root = root
         self.root.title("Server")
 
-        # Create and pack widgets
-        self.start_button = tk.Button(root, text="Start Server", command=self.start_server)
-        self.start_button.pack(pady=10)
+        # Create and pack the menu bar
+        self.menu_bar = tk.Menu(root)
+        root.config(menu=self.menu_bar)
 
-        self.stop_button = tk.Button(root, text="Stop Server", command=self.stop_server, state=tk.DISABLED)
-        self.stop_button.pack(pady=10)
+        # Add "File" menu
+        self.file_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.menu_bar.add_cascade(label="File", menu=self.file_menu)
+        self.file_menu.add_command(label="Start Server", command=self.start_server)
+        self.file_menu.add_command(label="Stop Server", command=self.stop_server, state=tk.DISABLED)
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label="Exit", command=root.quit)
 
+        # Add "Help" menu
+        self.help_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.menu_bar.add_cascade(label="Help", menu=self.help_menu)
+        self.help_menu.add_command(label="About", command=self.show_about)
+
+        # Create and pack status label
         self.status_label = tk.Label(root, text="Status: Not running")
         self.status_label.pack(pady=10)
 
@@ -29,8 +40,8 @@ class ServerApp:
         if not self.server_running:
             self.server_running = True
             self.status_label.config(text="Status: Running")
-            self.start_button.config(state=tk.DISABLED)
-            self.stop_button.config(state=tk.NORMAL)
+            self.file_menu.entryconfig("Start Server", state=tk.DISABLED)
+            self.file_menu.entryconfig("Stop Server", state=tk.NORMAL)
             self.server_thread = threading.Thread(target=self.receive_and_display_screen, args=(9999,))
             self.server_thread.start()
 
@@ -38,8 +49,8 @@ class ServerApp:
         if self.server_running:
             self.server_running = False
             self.status_label.config(text="Status: Stopped")
-            self.start_button.config(state=tk.NORMAL)
-            self.stop_button.config(state=tk.DISABLED)
+            self.file_menu.entryconfig("Start Server", state=tk.NORMAL)
+            self.file_menu.entryconfig("Stop Server", state=tk.DISABLED)
 
     def receive_and_display_screen(self, port):
         try:
@@ -74,6 +85,9 @@ class ServerApp:
 
         finally:
             self.stop_server()
+
+    def show_about(self):
+        messagebox.showinfo("About", "ServerApp v1.0\nA simple server application to display remote screen.")
 
 if __name__ == "__main__":
     root = tk.Tk()

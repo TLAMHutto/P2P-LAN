@@ -1,3 +1,19 @@
-var twoSum = function(nums, target){
-    
-}
+self.server_ip = '192.168.0.19"
+self.server_port = 9999
+
+# Create and pack widgets
+tk.Label(root, text="Server IP Address:”).pack(pady=5)
+tk.Label(root, text=self.server_ip).pack(pady=5) # Display the hard-coded IP
+
+self.start_button = tk.Button(root, text="Start Sending", command=self.start_sen
+self.start_button.pack(pady=10)
+
+self.stop_button = tk.Button(root, text="Stop Sending", command=self.stop_sending
+self.stop_button.pack(pady=10)
+
+self.status_label = tk.Label(root, text="Status: Not sending”)
+self ..status_label .pack(pady=10)
+
+self.client_thread = None
+
+self.sending = False

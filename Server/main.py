@@ -43,6 +43,18 @@ class ServerApp:
         self.image_label = tk.Label(root)
         self.image_label.pack(pady=10)
 
+        # Create and pack text display for OCR results
+        self.text_display_frame = tk.Frame(root)
+        self.text_display_frame.pack(pady=10)
+
+        self.text_display = tk.Text(self.text_display_frame, wrap='word', height=10, width=50)
+        self.text_display.pack(side="left", fill="both", expand=True)
+
+        self.scrollbar = tk.Scrollbar(self.text_display_frame, orient=tk.VERTICAL, command=self.text_display.yview)
+        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        self.text_display.config(yscrollcommand=self.scrollbar.set)
+
     def show_about(self):
         messagebox.showinfo("About", "ServerApp v1.0\nA simple server application to display remote screen.")
 

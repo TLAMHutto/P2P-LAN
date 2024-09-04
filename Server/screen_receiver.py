@@ -7,7 +7,7 @@ class ScreenReceiver:
     def __init__(self, app):
         self.app = app
 
-    def receive_and_display_screen(self, port):
+    def receive_and_display_screen(self, port, width=1900, height=1000):
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.bind(('', port))
@@ -25,6 +25,7 @@ class ScreenReceiver:
                             return
                         data += chunk
                     frame = pickle.loads(data)
+                    frame = cv2.resize(frame, (width, height))
                     cv2.imshow('Laptop Screen', frame)
                     if cv2.waitKey(1) == ord('q'):
                         break
